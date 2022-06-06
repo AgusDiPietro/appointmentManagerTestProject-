@@ -15,6 +15,11 @@ class Citas {
    constructor() {
        this.citas = [];
    }
+   agrgarCita(cita) {
+       this.citas = [...this.citas, cita];
+
+       console.log(this.citas);
+   }
 
 };
 
@@ -25,7 +30,7 @@ class UI {
         divMensaje.classList.add('text-center','alert','d-block','col-12');
 
         //Agregar clase en base al tipo de error
-        if(tipo==='error'){
+        if(tipo==='error'){ 
             divMensaje.classList.add('alert-danger');
         }else{
             divMensaje.classList.add('alert-success');
@@ -50,12 +55,12 @@ const administrarCitas = new Citas();
 // Registrar eventos
 eventListener();
 function eventListener(){
-    mascotaInput.addEventListener('change', datosCita);
-    propietariooInput.addEventListener('change', datosCita);
-    telefonoInput.addEventListener('change', datosCita);
-    fechaInput.addEventListener('change', datosCita);
-    horaInput.addEventListener('change', datosCita);
-    sintomasInput.addEventListener('change', datosCita);
+    mascotaInput.addEventListener('input', datosCita);
+    propietariooInput.addEventListener('input', datosCita);
+    telefonoInput.addEventListener('input', datosCita);
+    fechaInput.addEventListener('input', datosCita);
+    horaInput.addEventListener('input', datosCita);
+    sintomasInput.addEventListener('input', datosCita);
 
     formulario.addEventListener('submit',nuevaCita);
 }
@@ -75,9 +80,6 @@ const citaObj = {
 function datosCita(e){
     //Accedemos a las propiedades del objeto
     citaObj[e.target.name] = e.target.value
-
-    console.log(citaObj);
-
 }
 
 //Valida y agrega una nueva Cita a la class de citas
@@ -93,4 +95,26 @@ function nuevaCita(e){
         
         return;
     }
+
+    // Generar ID unico para cada cita
+    citaObj.id = Date.now();
+
+    //Creando una nueva cita
+    administrarCitas.agrgarCita({...citaObj});
+
+    // Reiniciamos el obj
+    reniciarObjeto(); 
+    
+    //reniciar formulario despues de mandar una cita
+    formulario.reset();
+
+}
+
+function reniciarObjeto(){
+    citaObj.mascota= '';
+    citaObj.propietario= '';
+    citaObj.telefono= '';
+    citaObj.fecha= '';
+    citaObj.hora= '';
+    citaObj.sintomas= '';
 }
